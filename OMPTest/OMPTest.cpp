@@ -4,6 +4,7 @@
 
 //Сделал: Ошлаков Данил, ИВТ-22
 //https://ivtipm.github.io/Programming/Glava20/index20.htm#z676 (а)
+//Properties → C/C++ → Language → OpenMP Support → Yes (/openmp)
 using namespace std;
 
 int main() {
