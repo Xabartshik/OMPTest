@@ -74,7 +74,11 @@ void reverseColumnsParallel(vector<vector<int>>& matrix) {
     int rows = matrix.size();
     if (rows == 0) return;
     int cols = matrix[0].size();
-
+    /*
+    Ключевое слово shared указывает, что переменная matrix будет общей для всех потоков. Это значит:
+        *Все потоки работают с одной и той же матрицей (без создания копий)
+        *Изменения, сделанные одним потоком, видны другим
+    */
 #pragma omp parallel for shared(matrix)
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols / 2; ++j) {
