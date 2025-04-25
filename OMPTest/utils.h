@@ -2,6 +2,7 @@
 #include <random>
 #include <omp.h>
 #include <iomanip>
+#include <cassert>
 
 using namespace std;
 
@@ -80,4 +81,50 @@ void reverseColumnsParallel(vector<vector<int>>& matrix) {
             swap(matrix[i][j], matrix[i][cols - 1 - j]);
         }
     }
+}
+
+
+// Проверка, что столбцы переставлены корректно
+bool areColumnsReversed(const std::vector<std::vector<int>>& original, const std::vector<std::vector<int>>& reversed) {
+    if (original.size() != reversed.size()) return false;
+    if (original.empty()) return true;
+
+    int rows = original.size();
+    int cols = original[0].size();
+
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            if (original[i][j] != reversed[i][cols - 1 - j]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+
+// Тестовая функция, проверяющая обе версии перестановки столбцов
+void test() {
+    // Создаём тестовую матрицу
+    std::vector<std::vector<int>> matrix = {
+        {1, 2, 3, 4},
+        {5, 6, 7, 8},
+        {9, 10, 11, 12}
+    };
+
+    // Копируем для проверки
+    auto original = matrix;
+
+    // Тестируем последовательную версию
+    reverseColumnsSequential(matrix);
+    assert(areColumnsReversed(original, matrix) && "Ошибка в reverseColumnsSequential!");
+
+    // Возвращаем исходную матрицу
+    matrix = original;
+
+    // Тестируем параллельную версию
+    reverseColumnsParallel(matrix);
+    assert(areColumnsReversed(original, matrix) && "Ошибка в reverseColumnsParallel!");
+
+    std::cout << "Все тесты пройдены успешно!\n";
 }
